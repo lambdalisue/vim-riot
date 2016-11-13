@@ -20,7 +20,7 @@ unlet! b:current_syntax
 " --- dependencies ---
 
 syntax region riotCustomTag
-  \ start=+^<\z([^ /!?<>"']\+\)>+
+  \ start=+^<\z([^ /!?<>"']\+\)\%(\s\+[^>]*\)\?>+
   \ end=+^</\z1>+
   \ keepend
   \ contains=customTag,styleRegion,scriptRegion,@JS,htmlRegion,customEndTag,javaScriptExpression
@@ -33,7 +33,7 @@ syntax region topLevelComment
   \ contains=htmlComment
 
 syntax match customTag
-  \ +^<[^ /!?<>"']\+>+
+  \ +^<[^ /!?<>"']\+\%(\s\+[^>]*\)\?>+
   \ contained
 
 syntax match customEndTag
@@ -70,7 +70,7 @@ syntax region htmlRegion
   \ keepend
 
 syntax region styleRegion
-  \ start=+\s\+<style\%(\s\+scoped\)\?>+
+  \ start=+<style\%(\s\+scoped\)\?>+
   \ end=+</style>+
   \ keepend
   \ contained
@@ -86,7 +86,7 @@ syntax keyword styleTagAttr scoped
   \ contained
 
 syntax region scriptRegion
-  \ start=+\s\+<script\%(\s\+[^>]\+\)\?>+
+  \ start=+<script\%(\s\+[^>]*\)\?>+
   \ end=+</script>+
   \ keepend
   \ contained
@@ -94,7 +94,7 @@ syntax region scriptRegion
   \ fold
 
 syntax match scriptTag
-  \ +\s\+<script\%(\s\+[^>]\+\)\?>+
+  \ +<script\%(\s\+[^>]*\)\?>+
   \ contained
   \ contains=htmlValue,htmlString,htmlTagName
 
