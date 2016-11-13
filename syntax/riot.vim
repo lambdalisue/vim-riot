@@ -70,7 +70,7 @@ syntax region htmlRegion
   \ keepend
 
 syntax region styleRegion
-  \ start=+\s\+<style\(\s\+scoped\)\?>+
+  \ start=+\s\+<style\%(\s\+scoped\)\?>+
   \ end=+</style>+
   \ keepend
   \ contained
@@ -78,7 +78,7 @@ syntax region styleRegion
   \ fold
 
 syntax match styleTag
-  \ +\s\+<style\(\s\+scoped\)\?>+
+  \ +\s\+<style\%(\s\+scoped\)\?>+
   \ contained
   \ contains=htmlTagName,styleTagAttr
 
@@ -86,7 +86,7 @@ syntax keyword styleTagAttr scoped
   \ contained
 
 syntax region scriptRegion
-  \ start=+\s\+<script\(\s\+[^>]\+\)\?>+
+  \ start=+\s\+<script\%(\s\+[^>]\+\)\?>+
   \ end=+</script>+
   \ keepend
   \ contained
@@ -94,7 +94,7 @@ syntax region scriptRegion
   \ fold
 
 syntax match scriptTag
-  \ +\s\+<script\(\s\+[^>]\+\)\?>+
+  \ +\s\+<script\%(\s\+[^>]\+\)\?>+
   \ contained
   \ contains=htmlValue,htmlString,htmlTagName
 
