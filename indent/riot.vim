@@ -36,30 +36,30 @@ setlocal indentkeys+=*<Return>,<>>,<<>
 " Multiline end tag regex (line beginning with '>' or '/>')
 let s:endtag = '^\s*\/\?>\s*'
 
-function! s:GetSynNamesAtSOL(lnum)
+function! s:GetSynNamesAtSOL(lnum) abort
   return map(synstack(a:lnum, 1), 'synIDattr(v:val, "name")')
 endfunction
 
-function! s:GetSynNamesAtEOL(lnum)
+function! s:GetSynNamesAtEOL(lnum) abort
   let lnum = prevnonblank(a:lnum)
   let col = strlen(getline(lnum))
   return map(synstack(lnum, col), 'synIDattr(v:val, "name")')
 endfunction
 
-function! s:SeemsHtmlSyntax(synattr)
+function! s:SeemsHtmlSyntax(synattr) abort
   return a:synattr =~ '^html' || a:synattr =~ 'Tag' || a:synattr == 'jsBlockInHtml'
 endfunction
 
-function! s:SeemsCssSyntax(synattr)
+function! s:SeemsCssSyntax(synattr) abort
   return a:synattr =~ '^css'
 endfunction
 
 " Get indents inferred from the current context.
-function! GetRiotIndent()
-  let prevSyntaxes = <SID>GetSynNamesAtEOL(v:lnum - 1)
+function! GetRiotIndent() abort
+  let prevSyntaxes = s:GetSynNamesAtEOL(v:lnum - 1)
   let lastPrevSyn = get(prevSyntaxes, -1)
 
-  if <SID>SeemsHtmlSyntax(lastPrevSyn)
+  if s:SeemsHtmlSyntax(lastPrevSyn)
     let ind = XmlIndentGet(v:lnum, 0)
 
     if getline(v:lnum) =~? s:endtag
@@ -73,7 +73,7 @@ function! GetRiotIndent()
     return ind
   endif
 
-  if <SID>SeemsCssSyntax(lastPrevSyn)
+  if s:SeemsCssSyntax(lastPrevSyn)
     return GetCSSIndent()
   endif
 
