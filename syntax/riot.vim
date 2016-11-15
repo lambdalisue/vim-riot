@@ -20,8 +20,8 @@ unlet! b:current_syntax
 " --- dependencies ---
 
 syntax region riotCustomTag
-  \ start=+^<\z([^ /!?<>"']\+\)\%(\s\+[^>]*\)\?>+
-  \ end=+^</\z1>+
+  \ start=+<\z([^ /!?<>"']\+\)\%(\s\+[^>]*\)\?>+
+  \ end=+</\z1>+
   \ keepend
   \ contains=customTag,styleRegion,scriptRegion,@JS,htmlRegion,customEndTag,javaScriptExpression
   \ fold
