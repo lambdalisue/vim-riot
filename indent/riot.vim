@@ -1,8 +1,7 @@
 " Vim ftdetect file
 " Language: Riot.js (JavaScript)
 " Maintainer: ryym
-
-if exists('*GetRiotIndent')
+if exists('b:did_indent')
   finish
 endif
 
@@ -15,9 +14,11 @@ runtime! indent/xml.vim
 
 unlet! b:did_indent
 runtime! indent/css.vim
+let s:undo_indent_css = b:undo_indent
 
 unlet! b:did_indent
 runtime! indent/javascript.vim
+let s:undo_indent_js = b:undo_indent
 
 " --- dependencies ---
 
@@ -27,6 +28,17 @@ setlocal indentexpr=GetRiotIndent()
 setlocal indentkeys=0{,0},0),0],0\,,!^F,o,O,e
 " HTML indentkeys
 setlocal indentkeys+=*<Return>,<>>,<<>
+
+let b:did_indent = 1
+let b:save_indent = join([
+      \ s:undo_indent_css,
+      \ s:undo_indent_js,
+      \ 'setlocal indentexpr< indentkeys<',
+      \], '|')
+
+if exists('*GetRiotIndent')
+  finish
+endif
 
 " Multiline end tag regex (line beginning with '>' or '/>')
 let s:endtag = '^\s*\/\?>\s*'
@@ -72,5 +84,7 @@ function! GetRiotIndent() abort
     return GetCSSIndent()
   endif
 
-  return GetJavascriptIndent()
+  let indent = GetJavascriptIndent()
+  let indent = indent == 0 ? XmlIndentGet(v:lnum, 0) : indent
+  return indent
 endfunction
